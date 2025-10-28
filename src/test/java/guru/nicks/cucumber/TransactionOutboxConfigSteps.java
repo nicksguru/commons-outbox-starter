@@ -1,7 +1,7 @@
 package guru.nicks.cucumber;
 
 import guru.nicks.cucumber.world.TextWorld;
-import guru.nicks.outbox.config.TransactionOutboxConfig;
+import guru.nicks.outbox.config.TransactionOutboxAutoConfiguration;
 import guru.nicks.outbox.domain.TransactionOutboxProperties;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,7 +36,7 @@ public class TransactionOutboxConfigSteps {
     private AutoCloseable closeableMocks;
 
     private TransactionOutboxProperties properties;
-    private TransactionOutboxConfig config;
+    private TransactionOutboxAutoConfiguration config;
 
     @Before
     public void beforeEachScenario() {
@@ -72,7 +72,7 @@ public class TransactionOutboxConfigSteps {
                     .perTaskRetryDelay(propertiesData.getPerTaskRetryDelay())
                     .build();
 
-            config = new TransactionOutboxConfig();
+            config = new TransactionOutboxAutoConfiguration();
         } catch (Exception e) {
             textWorld.setLastException(e);
         }

@@ -1,6 +1,6 @@
 package guru.nicks.cucumber;
 
-import guru.nicks.outbox.config.TransactionOutboxConfig;
+import guru.nicks.outbox.config.TransactionOutboxAutoConfiguration;
 import guru.nicks.outbox.domain.TransactionOutboxProperties;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,7 +32,7 @@ public class TransactionOutboxPersistorSteps {
     private AutoCloseable closeableMocks;
 
     private TransactionOutboxProperties properties;
-    private TransactionOutboxConfig config;
+    private TransactionOutboxAutoConfiguration config;
     private Persistor persistor;
 
     @Before
@@ -55,7 +55,7 @@ public class TransactionOutboxPersistorSteps {
                 .backgroundJobRestartDelay(Duration.ofMinutes(1))
                 .perTaskRetryDelay(Duration.ofSeconds(5))
                 .build();
-        config = new TransactionOutboxConfig();
+        config = new TransactionOutboxAutoConfiguration();
     }
 
     @When("a persistor is created")

@@ -1,6 +1,6 @@
 package guru.nicks.outbox;
 
-import guru.nicks.outbox.config.TransactionOutboxConfig;
+import guru.nicks.outbox.config.TransactionOutboxAutoConfiguration;
 
 import com.gruelbox.transactionoutbox.TransactionOutbox;
 
@@ -22,7 +22,7 @@ public interface OutboxActions {
 
     /**
      * Calls {@link TransactionOutbox#initialize()} and {@link TransactionOutbox#schedule(Class)}. For the explanation
-     * of why the first call is needed, see {@link TransactionOutboxConfig}.
+     * of why the first call is needed, see {@link TransactionOutboxAutoConfiguration}.
      *
      * @param targetClass usually {@link Object#getClass()} called from within a Spring bean
      * @param <T>         target class type

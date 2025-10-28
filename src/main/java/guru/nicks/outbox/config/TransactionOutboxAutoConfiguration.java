@@ -34,25 +34,7 @@ import org.springframework.context.annotation.Import;
 @EnableConfigurationProperties(TransactionOutboxProperties.class)
 @Import({SpringInstantiator.class, SpringTransactionManager.class})
 @Slf4j
-public class TransactionOutboxConfig {
-
-    @ConditionalOnMissingBean(Persistor.class)
-    @Bean
-    public Persistor persistor(TransactionOutboxProperties properties, ObjectMapper objectMapper) {
-        var builder = DefaultPersistor.builder()
-                .dialect(Dialect.POSTGRESQL_9);
-
-        if (properties.isUseJackson()) {
-            builder.serializer(JacksonInvocationSerializer
-                    .builder()
-                    .mapper(objectMapper)
-                    .build());
-        }
-
-        // add serializers for Invocation and TransactionOutboxEntry in case they need to be sent somewhere
-        objectMapper.registerModule(new TransactionOutboxJacksonModule());
-        return builder.build();
-    }
+public class TransactionOutboxAutoConfiguration {
 
     @ConditionalOnMissingBean(TransactionOutbox.class)
     @Bean
@@ -90,6 +72,24 @@ public class TransactionOutboxConfig {
                 })
                 //.initializeImmediately(false)
                 .build();
+    }
+
+    @ConditionalOnMissingBean(Persistor.class)
+    @Bean
+    public Persistor persistor(TransactionOutboxProperties properties, ObjectMapper objectMapper) {
+        var builder = DefaultPersistor.builder()
+                .dialect(Dialect.POSTGRESQL_9);
+
+        if (properties.isUseJackson()) {
+            builder.serializer(JacksonInvocationSerializer
+                    .builder()
+                    .mapper(objectMapper)
+                    .build());
+        }
+
+        // add serializers for Invocation and TransactionOutboxEntry in case they need to be sent somewhere
+        objectMapper.registerModule(new TransactionOutboxJacksonModule());
+        return builder.build();
     }
 
 }
