@@ -15,7 +15,9 @@ import java.time.Duration;
 
 /**
  * Retries background {@link TransactionOutbox} tasks. Unfortunately it seems impossible to log individual task errors -
- * {@code TransactionOutboxImpl} logs them with Slf4J.
+ * {@code TransactionOutboxImpl} logs them with Slf4J. The initial delay is in the
+ * {@code transaction-outbox.backgroundJobInitialDelay} config setting, and the restart delay is in the
+ * {@code transaction-outbox.backgroundJobRestartDelay} config setting.
  * <p>
  * This job in THE SAME for all apps that use Outbox. It processes ALL tasks, which means parallel processing and
  * increased throughput (there are no race conditions - tasks are locked before processing with
