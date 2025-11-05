@@ -34,7 +34,7 @@ import org.springframework.context.annotation.Import;
 @EnableConfigurationProperties(TransactionOutboxProperties.class)
 @Import({SpringInstantiator.class, SpringTransactionManager.class})
 @Slf4j
-public class TransactionOutboxAutoConfiguration {
+public class CommonsOutboxAutoConfiguration {
 
     @ConditionalOnMissingBean(TransactionOutbox.class)
     @Bean
