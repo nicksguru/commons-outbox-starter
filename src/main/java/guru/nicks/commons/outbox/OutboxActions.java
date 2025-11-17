@@ -1,6 +1,6 @@
-package guru.nicks.outbox;
+package guru.nicks.commons.outbox;
 
-import guru.nicks.outbox.config.CommonsOutboxAutoConfiguration;
+import guru.nicks.commons.outbox.config.CommonsOutboxAutoConfiguration;
 
 import com.gruelbox.transactionoutbox.TransactionOutbox;
 

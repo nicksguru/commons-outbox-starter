@@ -1,8 +1,8 @@
-package guru.nicks.cucumber;
+package guru.nicks.commons.cucumber;
 
-import guru.nicks.outbox.domain.TransactionOutboxProperties;
-import guru.nicks.outbox.domain.TransactionOutboxTaskBlockedEvent;
-import guru.nicks.outbox.listener.TransactionOutboxTaskBlockedListener;
+import guru.nicks.commons.outbox.domain.TransactionOutboxProperties;
+import guru.nicks.commons.outbox.domain.TransactionOutboxTaskBlockedEvent;
+import guru.nicks.commons.outbox.listener.TransactionOutboxTaskBlockedListener;
 
 import com.gruelbox.transactionoutbox.TransactionOutbox;
 import com.gruelbox.transactionoutbox.TransactionOutboxEntry;

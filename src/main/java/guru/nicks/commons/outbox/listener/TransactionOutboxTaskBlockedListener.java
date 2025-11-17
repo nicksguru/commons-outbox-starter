@@ -1,7 +1,7 @@
-package guru.nicks.outbox.listener;
+package guru.nicks.commons.outbox.listener;
 
-import guru.nicks.outbox.domain.TransactionOutboxProperties;
-import guru.nicks.outbox.domain.TransactionOutboxTaskBlockedEvent;
+import guru.nicks.commons.outbox.domain.TransactionOutboxProperties;
+import guru.nicks.commons.outbox.domain.TransactionOutboxTaskBlockedEvent;
 
 import com.gruelbox.transactionoutbox.TransactionOutbox;
 import lombok.RequiredArgsConstructor;

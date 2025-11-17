@@ -1,7 +1,7 @@
-package guru.nicks.cucumber;
+package guru.nicks.commons.cucumber;
 
-import guru.nicks.cucumber.world.TextWorld;
-import guru.nicks.outbox.TransactionOutboxBackgroundJob;
+import guru.nicks.commons.cucumber.world.TextWorld;
+import guru.nicks.commons.outbox.TransactionOutboxBackgroundJob;
 
 import com.gruelbox.transactionoutbox.TransactionOutbox;
 import com.gruelbox.transactionoutbox.TransactionOutboxEntry;

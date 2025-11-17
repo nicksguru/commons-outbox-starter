@@ -1,8 +1,8 @@
-package guru.nicks.cucumber;
+package guru.nicks.commons.cucumber;
 
-import guru.nicks.cucumber.world.TextWorld;
-import guru.nicks.outbox.config.CommonsOutboxAutoConfiguration;
-import guru.nicks.outbox.domain.TransactionOutboxProperties;
+import guru.nicks.commons.cucumber.world.TextWorld;
+import guru.nicks.commons.outbox.config.CommonsOutboxAutoConfiguration;
+import guru.nicks.commons.outbox.domain.TransactionOutboxProperties;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gruelbox.transactionoutbox.TransactionOutbox;

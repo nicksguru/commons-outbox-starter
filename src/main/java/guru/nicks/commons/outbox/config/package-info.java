@@ -1,4 +1,4 @@
 @NonNullApi
-package guru.nicks.outbox.config;
+package guru.nicks.commons.outbox.config;
 
 import org.springframework.lang.NonNullApi;

@@ -1,4 +1,6 @@
-package guru.nicks.outbox.domain;
+package guru.nicks.commons.outbox.domain;
+
+import guru.nicks.commons.outbox.listener.TransactionOutboxTaskBlockedListener;
 
 import com.gruelbox.transactionoutbox.TransactionOutboxEntry;
 import lombok.EqualsAndHashCode;
@@ -9,7 +11,7 @@ import org.springframework.context.ApplicationEvent;
 /**
  * Published when a task is blocked due to too many retry failures.
  *
- * @see guru.nicks.outbox.listener.TransactionOutboxTaskBlockedListener
+ * @see TransactionOutboxTaskBlockedListener
  */
 @Value
 @ToString(callSuper = true)

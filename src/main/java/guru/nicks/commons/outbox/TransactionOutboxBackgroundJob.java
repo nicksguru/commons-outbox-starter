@@ -1,6 +1,6 @@
-package guru.nicks.outbox;
+package guru.nicks.commons.outbox;
 
-import guru.nicks.utils.TimeUtils;
+import guru.nicks.commons.utils.TimeUtils;
 
 import com.gruelbox.transactionoutbox.TransactionOutbox;
 import com.gruelbox.transactionoutbox.spring.SpringInstantiator;

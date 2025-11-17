@@ -1,6 +1,6 @@
-package guru.nicks.outbox.domain;
+package guru.nicks.commons.outbox.domain;
 
-import guru.nicks.outbox.listener.TransactionOutboxTaskBlockedListener;
+import guru.nicks.commons.outbox.listener.TransactionOutboxTaskBlockedListener;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

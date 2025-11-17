@@ -1,8 +1,8 @@
-package guru.nicks.outbox.config;
+package guru.nicks.commons.outbox.config;
 
-import guru.nicks.outbox.TransactionOutboxBackgroundJob;
-import guru.nicks.outbox.domain.TransactionOutboxProperties;
-import guru.nicks.outbox.domain.TransactionOutboxTaskBlockedEvent;
+import guru.nicks.commons.outbox.TransactionOutboxBackgroundJob;
+import guru.nicks.commons.outbox.domain.TransactionOutboxProperties;
+import guru.nicks.commons.outbox.domain.TransactionOutboxTaskBlockedEvent;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gruelbox.transactionoutbox.DefaultPersistor;
