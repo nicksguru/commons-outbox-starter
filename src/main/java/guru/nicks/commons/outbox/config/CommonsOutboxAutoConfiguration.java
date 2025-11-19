@@ -36,6 +36,9 @@ import org.springframework.context.annotation.Import;
 @Slf4j
 public class CommonsOutboxAutoConfiguration {
 
+    /**
+     * Creates {@link TransactionOutbox} bean if it's not already present.
+     */
     @ConditionalOnMissingBean(TransactionOutbox.class)
     @Bean
     public TransactionOutbox transactionOutbox(
@@ -46,7 +49,7 @@ public class CommonsOutboxAutoConfiguration {
             Persistor outboxPersistor,
             ApplicationEventPublisher applicationEventPublisher,
             TransactionOutboxProperties properties) {
-        log.debug("Building TransactionOutbox using properties: {}", properties);
+        log.debug("Building {} bean using properties: {}", TransactionOutbox.class.getSimpleName(), properties);
 
         return TransactionOutbox.builder()
                 .transactionManager(outboxTransactionManager)
@@ -74,9 +77,14 @@ public class CommonsOutboxAutoConfiguration {
                 .build();
     }
 
+    /**
+     * Creates {@link Persistor} bean if it's not already present.
+     */
     @ConditionalOnMissingBean(Persistor.class)
     @Bean
     public Persistor persistor(TransactionOutboxProperties properties, ObjectMapper objectMapper) {
+        log.debug("Building {} bean using properties: {}", Persistor.class.getSimpleName(), properties);
+
         var builder = DefaultPersistor.builder()
                 .dialect(Dialect.POSTGRESQL_9);
 
