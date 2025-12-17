@@ -78,15 +78,21 @@ public class CommonsOutboxAutoConfiguration {
     }
 
     /**
-     * Creates {@link Persistor} bean if it's not already present.
+     * Creates {@link Persistor} bean if it's not already present. The dialect defaults to {@link Dialect#POSTGRESQL_9}
+     * but can be overridden via the {@code transaction-outbox.dialect} property.
      */
     @ConditionalOnMissingBean(Persistor.class)
     @Bean
-    public Persistor persistor(TransactionOutboxProperties properties, ObjectMapper objectMapper) {
+    public Persistor persistor(TransactionOutboxProperties properties, ObjectMapper objectMapper,
+            org.springframework.core.env.Environment environment) {
         log.debug("Building {} bean using properties: {}", Persistor.class.getSimpleName(), properties);
 
+        // Allow dialect configuration via properties, defaulting to PostgreSQL
+        Dialect dialect = environment.getProperty("transaction-outbox.dialect", Dialect.class, Dialect.POSTGRESQL_9);
+        log.info("Using transaction outbox dialect: {}", dialect);
+
         var builder = DefaultPersistor.builder()
-                .dialect(Dialect.POSTGRESQL_9);
+                .dialect(dialect);
 
         if (properties.isUseJackson()) {
             builder.serializer(JacksonInvocationSerializer
