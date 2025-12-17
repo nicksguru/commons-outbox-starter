@@ -17,9 +17,12 @@ import lombok.RequiredArgsConstructor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.core.env.Environment;
 
 import java.time.Duration;
 import java.util.Map;
+
+import static org.mockito.Mockito.mock;
 
 @RequiredArgsConstructor
 public class TransactionOutboxConfigSteps {
@@ -80,7 +83,7 @@ public class TransactionOutboxConfigSteps {
 
     @When("transaction outbox is created")
     public void theTransactionOutboxBeanIsCreated() {
-        var persistor = config.persistor(properties, new ObjectMapper());
+        var persistor = config.persistor(properties, new ObjectMapper(), mock(Environment.class));
 
         TransactionOutbox transactionOutbox = config.transactionOutbox(
                 outboxTransactionManager,

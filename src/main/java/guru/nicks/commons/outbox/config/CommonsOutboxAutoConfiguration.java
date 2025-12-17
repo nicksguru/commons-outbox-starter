@@ -22,6 +22,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.env.Environment;
 
 /**
  * Configures {@link TransactionOutbox} and its {@link Persistor}. This works with JPA transactions only (not with
@@ -84,11 +85,16 @@ public class CommonsOutboxAutoConfiguration {
     @ConditionalOnMissingBean(Persistor.class)
     @Bean
     public Persistor persistor(TransactionOutboxProperties properties, ObjectMapper objectMapper,
-            org.springframework.core.env.Environment environment) {
+            Environment environment) {
         log.debug("Building {} bean using properties: {}", Persistor.class.getSimpleName(), properties);
 
         // Allow dialect configuration via properties, defaulting to PostgreSQL
-        Dialect dialect = environment.getProperty("transaction-outbox.dialect", Dialect.class, Dialect.POSTGRESQL_9);
+        Dialect dialect = environment.getProperty("transaction-outbox.dialect", Dialect.class);
+        // fix for mocked Environment during tests
+        if (dialect == null) {
+            dialect = Dialect.POSTGRESQL_9;
+        }
+
         log.info("Using transaction outbox dialect: {}", dialect);
 
         var builder = DefaultPersistor.builder()
