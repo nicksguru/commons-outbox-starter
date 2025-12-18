@@ -2,7 +2,9 @@ package guru.nicks.commons.outbox.domain;
 
 import guru.nicks.commons.outbox.listener.TransactionOutboxTaskBlockedListener;
 
+import com.gruelbox.transactionoutbox.Dialect;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Value;
@@ -22,6 +24,12 @@ import java.time.Duration;
 @Jacksonized
 @Builder(toBuilder = true)
 public class TransactionOutboxProperties {
+
+    /**
+     * {@link Dialect} (not an enumeration): MY_SQL_5, MY_SQL_8, POSTGRESQL_9, H2, ORACLE, MS_SQL_SERVER.
+     */
+    @NotBlank
+    String dialect;
 
     /**
      * For flexible object serialization (any argument types in proxied methods, with polymorphism etc.) - see <a

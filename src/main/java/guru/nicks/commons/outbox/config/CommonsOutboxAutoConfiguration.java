@@ -16,12 +16,14 @@ import com.gruelbox.transactionoutbox.jackson.TransactionOutboxJacksonModule;
 import com.gruelbox.transactionoutbox.spring.SpringInstantiator;
 import com.gruelbox.transactionoutbox.spring.SpringTransactionManager;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.Nullable;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.env.Environment;
 
 /**
@@ -84,21 +86,14 @@ public class CommonsOutboxAutoConfiguration {
      */
     @ConditionalOnMissingBean(Persistor.class)
     @Bean
-    public Persistor persistor(TransactionOutboxProperties properties, ObjectMapper objectMapper,
-            Environment environment) {
-        log.debug("Building {} bean using properties: {}", Persistor.class.getSimpleName(), properties);
+    public Persistor persistor(TransactionOutboxProperties properties,
+            Converter<String, Dialect> outboxDialectConverter, ObjectMapper objectMapper, Environment environment) {
+        // can't print ALL properties - they may contain sensitive data
+        log.debug("Building {} bean using SQL dialect {}", Persistor.class.getSimpleName(), properties.getDialect());
 
-        // Allow dialect configuration via properties, defaulting to PostgreSQL
-        Dialect dialect = environment.getProperty("transaction-outbox.dialect", Dialect.class);
-        // fix for mocked Environment during tests
-        if (dialect == null) {
-            dialect = Dialect.POSTGRESQL_9;
-        }
-
-        log.info("Using transaction outbox dialect: {}", dialect);
-
-        var builder = DefaultPersistor.builder()
-                .dialect(dialect);
+        var builder = DefaultPersistor
+                .builder()
+                .dialect(outboxDialectConverter.convert(properties.getDialect()));
 
         if (properties.isUseJackson()) {
             builder.serializer(JacksonInvocationSerializer
@@ -110,6 +105,33 @@ public class CommonsOutboxAutoConfiguration {
         // add serializers for Invocation and TransactionOutboxEntry in case they need to be sent somewhere
         objectMapper.registerModule(new TransactionOutboxJacksonModule());
         return builder.build();
+    }
+
+    /**
+     * Converts a string to a {@link Dialect}. The latter is not an enumeration, therefore we need to check each value
+     * manually and revamp the logic in case something changes in {@link Dialect}.
+     * <p>
+     * If the string does not match any known dialect, an {@link IllegalArgumentException} is thrown.
+     */
+    @Bean
+    public Converter<String, Dialect> outboxDialectConverter() {
+        // cannot be a Lambda, or Spring will fail with 'Unable to determine source type <S> and target type <T>
+        // for your Converter'
+        return new Converter<>() {
+            @Override
+            public @Nullable Dialect convert(String source) {
+                return switch (source) {
+                    case "MY_SQL_5" -> Dialect.MY_SQL_5;
+                    case "MY_SQL_8" -> Dialect.MY_SQL_8;
+                    case "POSTGRESQL_9" -> Dialect.POSTGRESQL_9;
+                    case "H2" -> Dialect.H2;
+                    case "ORACLE" -> Dialect.ORACLE;
+                    case "MS_SQL_SERVER" -> Dialect.MS_SQL_SERVER;
+                    default -> throw new IllegalArgumentException("Unknown dialect: '" + source + "'");
+                };
+            }
+        };
+
     }
 
 }

@@ -5,6 +5,7 @@ import guru.nicks.commons.outbox.config.CommonsOutboxAutoConfiguration;
 import guru.nicks.commons.outbox.domain.TransactionOutboxProperties;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gruelbox.transactionoutbox.Dialect;
 import com.gruelbox.transactionoutbox.TransactionOutbox;
 import com.gruelbox.transactionoutbox.spring.SpringInstantiator;
 import com.gruelbox.transactionoutbox.spring.SpringTransactionManager;
@@ -54,6 +55,7 @@ public class TransactionOutboxConfigSteps {
     @DataTableType
     public TransactionOutboxProperties createTransactionOutboxProperties(Map<String, String> entry) {
         return TransactionOutboxProperties.builder()
+                .dialect("POSTGRESQL_9")
                 .useJackson(Boolean.parseBoolean(entry.get("useJackson")))
                 .unblockBlockedTasks(Boolean.parseBoolean(entry.get("unblockBlockedTasks")))
                 .blockAfterAttempts(Integer.parseInt(entry.get("blockAfterAttempts")))
@@ -67,6 +69,7 @@ public class TransactionOutboxConfigSteps {
     public void transactionOutboxPropertiesAreConfiguredWith(TransactionOutboxProperties propertiesData) {
         try {
             properties = TransactionOutboxProperties.builder()
+                    .dialect("POSTGRESQL_9")
                     .useJackson(propertiesData.isUseJackson())
                     .unblockBlockedTasks(propertiesData.isUnblockBlockedTasks())
                     .blockAfterAttempts(propertiesData.getBlockAfterAttempts())
@@ -83,7 +86,8 @@ public class TransactionOutboxConfigSteps {
 
     @When("transaction outbox is created")
     public void theTransactionOutboxBeanIsCreated() {
-        var persistor = config.persistor(properties, new ObjectMapper(), mock(Environment.class));
+        var persistor = config.persistor(properties, str -> Dialect.POSTGRESQL_9,
+                new ObjectMapper(), mock(Environment.class));
 
         TransactionOutbox transactionOutbox = config.transactionOutbox(
                 outboxTransactionManager,

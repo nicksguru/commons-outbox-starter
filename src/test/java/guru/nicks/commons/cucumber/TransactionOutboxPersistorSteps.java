@@ -5,6 +5,7 @@ import guru.nicks.commons.outbox.domain.TransactionOutboxProperties;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gruelbox.transactionoutbox.DefaultPersistor;
+import com.gruelbox.transactionoutbox.Dialect;
 import com.gruelbox.transactionoutbox.Persistor;
 import com.gruelbox.transactionoutbox.jackson.TransactionOutboxJacksonModule;
 import io.cucumber.java.After;
@@ -50,6 +51,7 @@ public class TransactionOutboxPersistorSteps {
     @Given("transaction outbox properties with Jackson serialization {booleanValue}")
     public void transactionOutboxPropertiesWithJacksonSerialization(boolean useJackson) {
         properties = TransactionOutboxProperties.builder()
+                .dialect("POSTGRESQL_9")
                 .useJackson(useJackson)
                 .unblockBlockedTasks(false)
                 .blockAfterAttempts(3)
@@ -62,7 +64,8 @@ public class TransactionOutboxPersistorSteps {
 
     @When("a persistor is created")
     public void persistorIsCreated() {
-        persistor = config.persistor(properties, objectMapper, mock(Environment.class));
+        persistor = config.persistor(properties, str -> Dialect.POSTGRESQL_9,
+                objectMapper, mock(Environment.class));
     }
 
     @Then("the persistor should be properly configured")
