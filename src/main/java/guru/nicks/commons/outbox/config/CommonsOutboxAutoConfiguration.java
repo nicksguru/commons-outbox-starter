@@ -1,9 +1,5 @@
 package guru.nicks.commons.outbox.config;
 
-import guru.nicks.commons.outbox.TransactionOutboxBackgroundJob;
-import guru.nicks.commons.outbox.domain.TransactionOutboxProperties;
-import guru.nicks.commons.outbox.domain.TransactionOutboxTaskBlockedEvent;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gruelbox.transactionoutbox.DefaultPersistor;
 import com.gruelbox.transactionoutbox.Dialect;
@@ -15,6 +11,9 @@ import com.gruelbox.transactionoutbox.jackson.JacksonInvocationSerializer;
 import com.gruelbox.transactionoutbox.jackson.TransactionOutboxJacksonModule;
 import com.gruelbox.transactionoutbox.spring.SpringInstantiator;
 import com.gruelbox.transactionoutbox.spring.SpringTransactionManager;
+import guru.nicks.commons.outbox.TransactionOutboxBackgroundJob;
+import guru.nicks.commons.outbox.domain.TransactionOutboxProperties;
+import guru.nicks.commons.outbox.domain.TransactionOutboxTaskBlockedEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.Nullable;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
