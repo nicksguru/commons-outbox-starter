@@ -16,11 +16,11 @@ import guru.nicks.commons.outbox.domain.TransactionOutboxProperties;
 import guru.nicks.commons.outbox.domain.TransactionOutboxTaskBlockedEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.Nullable;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.env.Environment;
@@ -32,7 +32,7 @@ import org.springframework.core.env.Environment;
  * WARNING: that bean is the same in each app, and the background job ({@link TransactionOutboxBackgroundJob}) is the
  * same too. See crucial comments in {@link TransactionOutboxBackgroundJob}.
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 @EnableConfigurationProperties(TransactionOutboxProperties.class)
 @Import({SpringInstantiator.class, SpringTransactionManager.class})
 @Slf4j
