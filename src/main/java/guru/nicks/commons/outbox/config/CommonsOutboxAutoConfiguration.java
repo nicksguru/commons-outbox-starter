@@ -1,5 +1,9 @@
 package guru.nicks.commons.outbox.config;
 
+import guru.nicks.commons.outbox.TransactionOutboxBackgroundJob;
+import guru.nicks.commons.outbox.domain.TransactionOutboxProperties;
+import guru.nicks.commons.outbox.domain.TransactionOutboxTaskBlockedEvent;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gruelbox.transactionoutbox.DefaultPersistor;
 import com.gruelbox.transactionoutbox.Dialect;
@@ -11,11 +15,7 @@ import com.gruelbox.transactionoutbox.jackson.JacksonInvocationSerializer;
 import com.gruelbox.transactionoutbox.jackson.TransactionOutboxJacksonModule;
 import com.gruelbox.transactionoutbox.spring.SpringInstantiator;
 import com.gruelbox.transactionoutbox.spring.SpringTransactionManager;
-import guru.nicks.commons.outbox.TransactionOutboxBackgroundJob;
-import guru.nicks.commons.outbox.domain.TransactionOutboxProperties;
-import guru.nicks.commons.outbox.domain.TransactionOutboxTaskBlockedEvent;
 import lombok.extern.slf4j.Slf4j;
-import org.jspecify.annotations.Nullable;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -23,7 +23,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.core.env.Environment;
 
 /**
  * Configures {@link TransactionOutbox} and its {@link Persistor}. This works with JPA transactions only (not with
@@ -86,7 +85,7 @@ public class CommonsOutboxAutoConfiguration {
     @ConditionalOnMissingBean(Persistor.class)
     @Bean
     public Persistor persistor(TransactionOutboxProperties properties,
-            Converter<String, Dialect> outboxDialectConverter, ObjectMapper objectMapper, Environment environment) {
+            Converter<String, Dialect> outboxDialectConverter, ObjectMapper objectMapper) {
         // can't print ALL properties - they may contain sensitive data
         log.debug("Building {} bean using SQL dialect {}", Persistor.class.getSimpleName(), properties.getDialect());
 
@@ -118,7 +117,7 @@ public class CommonsOutboxAutoConfiguration {
         // for your Converter'
         return new Converter<>() {
             @Override
-            public @Nullable Dialect convert(String source) {
+            public Dialect convert(String source) {
                 return switch (source) {
                     case "MY_SQL_5" -> Dialect.MY_SQL_5;
                     case "MY_SQL_8" -> Dialect.MY_SQL_8;

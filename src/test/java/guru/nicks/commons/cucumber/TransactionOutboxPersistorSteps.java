@@ -17,13 +17,11 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
-import org.springframework.core.env.Environment;
 
 import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 public class TransactionOutboxPersistorSteps {
@@ -64,8 +62,7 @@ public class TransactionOutboxPersistorSteps {
 
     @When("a persistor is created")
     public void persistorIsCreated() {
-        persistor = config.persistor(properties, str -> Dialect.POSTGRESQL_9,
-                objectMapper, mock(Environment.class));
+        persistor = config.persistor(properties, str -> Dialect.POSTGRESQL_9, objectMapper);
     }
 
     @Then("the persistor should be properly configured")
